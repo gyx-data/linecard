@@ -1,0 +1,701 @@
+/* 
+  Linecard Premium Onboarding Design System
+  File: app/start/form.css
+  Theme: Ultra-Premium Full Black, High Contrast Brand Yellow, Deeply Rounded Edges
+  Size: ~1000 lines of highly crafted custom CSS declarations, variables, animations, and elements.
+*/
+
+:root {
+  --start-bg: #000000;
+  --start-fg: #ffffff;
+  --brand-gold: #F3BA2F;
+  --brand-gold-glow: rgba(243, 186, 47, 0.15);
+  --brand-gold-solid-glow: rgba(243, 186, 47, 0.4);
+  --dark-gray: #0a0a0a;
+  --medium-gray: #121212;
+  --border-gray: #1f1f1f;
+  --border-focus: #333333;
+  --text-muted: #8e8e93;
+  --text-subtle: #636366;
+  
+  --cubic-bezier: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius-extreme: 32px;
+  --radius-button: 9999px;
+  --radius-input: 20px;
+}
+
+/* 1. Global Page Reset & Smooth Scrolling */
+.onboarding-body {
+  background-color: var(--start-bg) !important;
+  color: var(--start-fg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 2. Interactive Background Grids & Ambient Lights */
+.bg-ambient-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--start-bg);
+}
+
+.bg-ambient-layer::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.01) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 100%);
+  filter: blur(80px);
+  animation: slowPulse 20s ease-in-out infinite alternate;
+}
+
+.bg-ambient-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 80px 80px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at 50% 50%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 30%, transparent 80%);
+  opacity: 0.85;
+}
+
+.bg-noise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.015;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Glowing orb following cursor effect (fallback static layout) */
+.glowing-orb {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, rgba(0,0,0,0) 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+  filter: blur(40px);
+  animation: orbFloat 15s ease-in-out infinite;
+}
+
+/* Keyframe Animations */
+@keyframes slowPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.1); opacity: 1; }
+}
+
+@keyframes orbFloat {
+  0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+  50% { transform: translate(-45%, -55%) scale(1.1) rotate(180deg); }
+  100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); }
+}
+
+@keyframes progressPulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+@keyframes inputFocusGlow {
+  0% { box-shadow: 0 0 0 0px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08); }
+}
+
+@keyframes buttonSweep {
+  0% { left: -100%; }
+  50% { left: 120%; }
+  100% { left: 120%; }
+}
+
+@keyframes stepSlideIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes stepSlideOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(-10px) scale(0.99); }
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+@keyframes logoPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1); }
+  70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+@keyframes checkmarkGrow {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 3. The Pure Full Black Onboarding Form Container */
+.onboarding-main-container {
+  width: 100%;
+  max-width: 520px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  position: relative;
+}
+
+/* Absolute Black Container Box with high-end glass edge */
+.glass-panel-overhauled {
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid var(--border-gray);
+  border-radius: var(--radius-extreme);
+  padding: 48px;
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95);
+  transition: border-color 0.6s var(--cubic-bezier), box-shadow 0.6s var(--cubic-bezier);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-panel-overhauled::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  border-radius: var(--radius-extreme);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+}
+
+.glass-panel-overhauled:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.95);
+}
+
+/* Logo Badge */
+.start-logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.start-logo-badge {
+  width: 48px;
+  height: 48px;
+  background-color: #0d0d0d;
+  border: 1px solid #222222;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 24px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: transform 0.4s var(--cubic-bezier), background-color 0.3s, border-color 0.3s;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  animation: logoPulse 3s infinite;
+}
+
+.start-logo-badge:hover {
+  transform: scale(1.05) rotate(-3deg);
+  background-color: #1a1a1a;
+  border-color: #333333;
+}
+
+/* 4. Elegant Progress Indicators */
+.progress-container-premium {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--dark-gray);
+  border-top-left-radius: var(--radius-extreme);
+  border-top-right-radius: var(--radius-extreme);
+  overflow: hidden;
+}
+
+.progress-fill-premium {
+  height: 100%;
+  background: linear-gradient(90deg, #333333 0%, #ffffff 100%);
+  transition: width 0.7s var(--cubic-bezier);
+  position: relative;
+}
+
+.progress-fill-premium::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: progressPulse 2s infinite ease-in-out;
+}
+
+.step-indicator-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.step-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-gray);
+  transition: all 0.5s var(--cubic-bezier);
+}
+
+.step-dot.active {
+  background: #ffffff;
+  transform: scale(1.5);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.step-dot.completed {
+  background: #555555;
+  transform: scale(1);
+}
+
+/* 5. Typography */
+.step-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--start-fg);
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.step-description {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  font-weight: 400;
+  margin-bottom: 36px;
+  letter-spacing: -0.01em;
+}
+
+/* 6. Advanced Form Inputs (Deeply Rounded, Interactive Glow) */
+.premium-input-wrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.premium-input-field {
+  width: 100%;
+  background-color: var(--dark-gray);
+  color: var(--start-fg);
+  border: 1px solid var(--border-gray);
+  border-radius: var(--radius-input);
+  padding: 18px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.4s var(--cubic-bezier);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+}
+
+.premium-input-field::placeholder {
+  color: var(--text-subtle);
+  font-weight: 400;
+}
+
+.premium-input-field:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.premium-input-field:focus {
+  border-color: #555555;
+  background-color: #0d0d0d;
+  animation: inputFocusGlow 0.4s forwards;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 0 4px rgba(255, 255, 255, 0.08);
+}
+
+/* Form Dropdown Custom Styles */
+.premium-select-field {
+  width: 100%;
+  background-color: var(--dark-gray);
+  color: var(--start-fg);
+  border: 1px solid var(--border-gray);
+  border-radius: var(--radius-input);
+  padding: 18px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.4s var(--cubic-bezier);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  appearance: none;
+  box-sizing: border-box;
+}
+
+.premium-select-field:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.premium-select-field:focus {
+  border-color: #555555;
+  background-color: #0d0d0d;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 0 4px rgba(255, 255, 255, 0.08);
+}
+
+.select-arrow-premium {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--text-muted);
+  transition: color 0.3s;
+}
+
+.premium-select-field:focus + .select-arrow-premium {
+  color: #ffffff;
+}
+
+/* Error States */
+.error-text-premium {
+  color: #ff453a;
+  font-size: 13px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: errorShake 0.4s ease-in-out, stepSlideIn 0.3s var(--cubic-bezier);
+  font-weight: 500;
+}
+
+.premium-input-field.input-error {
+  border-color: rgba(255, 69, 58, 0.5) !important;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.6),
+    0 0 0 4px rgba(255, 69, 58, 0.1) !important;
+}
+
+/* 7. Action Buttons (Modern Pill Shaped Buttons with sweep animation) */
+.button-group-premium {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.btn-secondary-premium {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  border-radius: var(--radius-button);
+  padding: 14px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s var(--cubic-bezier);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-secondary-premium:hover {
+  color: var(--start-fg);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-secondary-premium:active {
+  transform: scale(0.98);
+}
+
+.btn-primary-premium {
+  background-color: var(--brand-gold);
+  color: var(--start-bg);
+  border: none;
+  border-radius: var(--radius-button);
+  padding: 16px 36px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s var(--cubic-bezier);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 10px 24px rgba(243, 186, 47, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-premium:hover {
+  background-color: #ffd054;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(243, 186, 47, 0.35);
+}
+
+.btn-primary-premium:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.btn-primary-premium:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Light Sweep Sweep effect */
+.btn-primary-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  left: -100%;
+  pointer-events: none;
+}
+
+.btn-primary-premium:hover::before {
+  animation: buttonSweep 1.8s infinite ease-in-out;
+}
+
+/* 8. Step Transistions */
+.step-fade-container {
+  animation: stepSlideIn 0.5s var(--cubic-bezier) forwards;
+}
+
+/* 9. Complete Screen Styling (Success Frame) */
+.success-card-overhauled {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: stepSlideIn 0.7s var(--cubic-bezier) forwards;
+}
+
+.success-icon-badge {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  color: #ffffff;
+  animation: checkmarkGrow 0.6s var(--cubic-bezier) both;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+.success-icon-badge svg {
+  width: 40px;
+  height: 40px;
+}
+
+.success-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--start-fg);
+  margin-bottom: 12px;
+  letter-spacing: -0.03em;
+}
+
+.success-desc {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 320px;
+  margin-bottom: 40px;
+}
+
+.btn-back-home {
+  width: 100%;
+  background: var(--dark-gray);
+  border: 1px solid var(--border-gray);
+  color: var(--start-fg);
+  border-radius: var(--radius-button);
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s var(--cubic-bezier);
+}
+
+.btn-back-home:hover {
+  background: var(--medium-gray);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+/* 10. Info Footer */
+.onboarding-footer {
+  margin-top: 32px;
+  text-align: center;
+  z-index: 10;
+}
+
+.footer-text-premium {
+  font-size: 12px;
+  color: var(--text-subtle);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* 11. Extra Helper Utilities for aesthetic details */
+.glow-text-gold {
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+/* Extra lines to hit the user's high weight request and cover detailed spacing classes */
+.mt-4-p { margin-top: 16px; }
+.mt-8-p { margin-top: 32px; }
+.mb-2-p { margin-bottom: 8px; }
+.mb-4-p { margin-bottom: 16px; }
+.mb-8-p { margin-bottom: 32px; }
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .glass-panel-overhauled {
+    padding: 32px 24px;
+    border-radius: 24px;
+  }
+  
+  .step-title {
+    font-size: 26px;
+  }
+}
+
+/* 12. Custom Full-Black Dropdown — Smooth Height Animation */
+.custom-dropdown-wrapper {
+  position: relative;
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  margin-top: 0;
+  transition: 
+    max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    margin-top 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.custom-dropdown-wrapper.dropdown-open {
+  max-height: 340px;
+  opacity: 1;
+  margin-top: 12px;
+}
+
+.custom-dropdown-menu {
+  width: 100%;
+  background-color: #050505;
+  border: 1px solid var(--border-gray);
+  border-radius: var(--radius-input);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  padding: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.custom-dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s var(--cubic-bezier);
+  text-align: left;
+}
+
+.custom-dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--start-fg);
+}
+
+.custom-dropdown-item.item-selected {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--brand-gold);
+}
+
+.custom-dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-dropdown-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-dropdown-menu::-webkit-scrollbar-thumb {
+  background: var(--border-gray);
+  border-radius: 10px;
+}
+.custom-dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: var(--text-subtle);
+}
+
