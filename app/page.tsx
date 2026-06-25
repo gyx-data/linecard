@@ -1,12 +1,36 @@
 "use client";
 
-import { ShieldCheck, Zap, Wallet, ArrowRight, User } from "lucide-react";
+import { ShieldCheck, Zap, Wallet, ArrowRight, User, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import CardVisual from "./components/CardVisual";
 import { useState, useEffect } from "react";
 
+const faqItems = [
+  {
+    question: "How do I get a Linecard?",
+    answer: "Getting started is instant. Simply register with your email address, pay the 5.99 € card creation fee using our secure NOWPayments gateway, and your prepaid card details will be generated immediately on your dashboard."
+  },
+  {
+    question: "Is there any KYC verification required?",
+    answer: "No. Linecard is designed with privacy in mind. We do not ask for passport scans, selfie verifications, or utility bills. You only need a valid email address to register and access your dashboard."
+  },
+  {
+    question: "What is the minimum initial deposit?",
+    answer: "The card requires a minimum initial top-up of $20 to activate your balance. You can fund this balance using major cryptocurrencies such as USDT, USDC, BTC, and ETH."
+  },
+  {
+    question: "Where can I use my Linecard virtual card?",
+    answer: "Your virtual Linecard is accepted globally at over 50 million online retailers and physical merchants. You can link it to Apple Pay or Google Pay to make contactless payments in physical stores."
+  },
+  {
+    question: "How are cryptocurrency payments processed?",
+    answer: "At the moment of purchase, your cryptocurrency balance is automatically converted to the merchant's local currency at the prevailing exchange rate, ensuring a seamless transaction."
+  }
+];
+
 export default function Home() {
   const [loggedInUser, setLoggedInUser] = useState<any>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -134,6 +158,73 @@ export default function Home() {
                 Start spending your crypto with an incredibly low barrier to entry. Fund your account with just $20 and your card is ready to use instantly.
               </p>
             </div>
+          </div>
+        </section>
+
+        {/* About Section */}
+        <section id="about" className="w-full max-w-7xl mx-auto px-6 py-24 border-t border-zinc-900 z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <span className="text-xs text-[#F3BA2F] uppercase tracking-widest font-semibold">About Linecard</span>
+              <h2 className="text-3xl md:text-5xl font-bold mt-4 mb-6">Bridging digital assets and physical retail.</h2>
+              <p className="text-zinc-400 leading-relaxed mb-6">
+                Linecard was founded on the belief that financial privacy is a fundamental human right. Our platform allows crypto holders to unlock the value of their digital assets instantly at over 50 million merchants worldwide.
+              </p>
+              <p className="text-zinc-400 leading-relaxed">
+                By bypassing the invasive identity checks (KYC) associated with traditional credit card providers, we deliver a seamless, cardholder-centric experience powered by modern blockchain infrastructure.
+              </p>
+            </div>
+            <div className="glass-panel p-8 rounded-3xl border border-zinc-800/40 relative overflow-hidden bg-gradient-to-br from-zinc-950 to-black">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#F3BA2F]/5 rounded-full filter blur-2xl"></div>
+              <h3 className="text-xl font-bold text-white mb-4">Our Commitment</h3>
+              <ul className="space-y-4 text-zinc-400">
+                <li className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F3BA2F] mt-2 shrink-0"></span>
+                  <span><strong>No KYC ever</strong>: No ID submissions, utility bills, or facial scans.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F3BA2F] mt-2 shrink-0"></span>
+                  <span><strong>Secure Infrastructure</strong>: Your digital assets are connected through audited, enterprise-grade rails.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#F3BA2F] mt-2 shrink-0"></span>
+                  <span><strong>Global Acceptability</strong>: Spends like local currency at any contactless or online checkout point.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section id="faq" className="w-full max-w-4xl mx-auto px-6 py-24 border-t border-zinc-900 z-10">
+          <div className="text-center mb-16">
+            <span className="text-xs text-[#F3BA2F] uppercase tracking-widest font-semibold">FAQ</span>
+            <h2 className="text-3xl md:text-5xl font-bold mt-4">Frequently Asked Questions</h2>
+          </div>
+
+          <div className="space-y-4">
+            {faqItems.map((item, idx) => (
+              <div 
+                key={idx} 
+                className="glass-panel rounded-2xl border border-zinc-900 hover:border-zinc-800/80 transition-all overflow-hidden"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full flex items-center justify-between p-6 text-left font-semibold text-lg text-white hover:text-[#F3BA2F] transition-colors"
+                >
+                  <span>{item.question}</span>
+                  <ChevronDown className={`w-5 h-5 text-zinc-400 transition-transform duration-300 ${openFaq === idx ? "rotate-180 text-[#F3BA2F]" : ""}`} />
+                </button>
+                <div 
+                  className={`transition-all duration-300 ease-in-out ${openFaq === idx ? "max-h-96 opacity-100 border-t border-zinc-900/50" : "max-h-0 opacity-0"}`}
+                  style={{ overflow: 'hidden' }}
+                >
+                  <p className="p-6 text-zinc-400 leading-relaxed text-sm">
+                    {item.answer}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
       </main>
