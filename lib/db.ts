@@ -1,14 +1,11 @@
 import mysql from "mysql2/promise";
 
-const connectionUri = process.env.DATABASE_URL;
+const connectionUri = "mysql://u138_5EVnDRBt4k:ev%3D52zg2%2Bx9!N%40mwCRqyj9Q3@5.180.34.43:3306/s138_linecard";
 
 let pool: mysql.Pool | null = null;
 let isTableChecked = false;
 
 export function getDbPool() {
-  if (!connectionUri) {
-    throw new Error("DATABASE_URL environment variable is missing!");
-  }
   if (!pool) {
     pool = mysql.createPool({
       uri: connectionUri,
