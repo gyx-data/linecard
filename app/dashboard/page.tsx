@@ -53,6 +53,26 @@ export default function DashboardPage() {
         <div className="dash-bg-grid"></div>
       </div>
 
+      {/* Mobile Header (visible only on mobile) */}
+      <header className="dash-mobile-header">
+        <Link href="/" className="dash-logo" style={{ padding: 0 }}>
+          <img src="/linecard_logo.png" alt="Linecard" className="w-10 h-10 object-contain" />
+          <span className="dash-logo-text">Linecard</span>
+        </Link>
+        <button 
+          onClick={() => {
+            if (typeof window !== "undefined") {
+              localStorage.removeItem("linecard_user");
+            }
+            router.push("/");
+          }} 
+          className="dash-mobile-logout"
+          title="Log out"
+        >
+          <LogOut className="w-5 h-5 text-[#ff453a]" />
+        </button>
+      </header>
+
       {/* Sidebar */}
       <aside className="dash-sidebar">
         <div className="dash-sidebar-top">
